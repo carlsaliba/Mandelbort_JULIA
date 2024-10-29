@@ -22,11 +22,8 @@ def is_in_Mandelbrot(c, num_iterations):
     return abs(z) <= 2
 
 
-def is_in_Julia(z, num_iterations):
-    try:
-        c = complex(input("Choose the c for your Julia plot (e.g., c=-0.8+0.156j): "))
-    except ValueError:
-        print("Invalid format. Please enter a complex number, e.g., -0.8+0.156j")
+def is_in_Julia(z,c, num_iterations):
+    
 
     for _ in range(num_iterations):
         z = z ** 2 + c
@@ -53,9 +50,9 @@ def plot_mandelbrot():
     return
 
 
-def plot_Julia():
+def plot_Julia(c):
     z = complex_matrix(-2, 2, -1, 1, pixel_density=512*4)
-    julia_set = is_in_Julia(z, num_iterations=100)
+    julia_set = is_in_Julia(z,c, num_iterations=100)
     
     
 
