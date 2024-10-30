@@ -16,6 +16,8 @@ def is_in_Mandelbrot(c, num_iterations):
     """
     z = 0
     for _ in range(num_iterations):
+        if abs(z) > 100:  # Stop if z becomes too large, avoiding overflow
+            return False
         z = z ** 2 + c
     return abs(z) <= 2
 
@@ -34,6 +36,8 @@ def is_in_Julia(z, c, num_iterations):
     - bool: True si `z` est dans l'ensemble, sinon False.
     """
     for _ in range(num_iterations):
+        if abs(z) > 100:  # Stop if z becomes too large, avoiding overflow
+            return False
         z = z ** 2 + c
     return abs(z) <= 2
 
@@ -83,7 +87,7 @@ def plot_Julia(c):
     Retourne:
     - None: Affiche directement l'image de l'ensemble de Julia.
     """
-    z = complex_matrix(-2, 2, -1, 1, pixel_density=512*4)
+    z = complex_matrix(-2, 2, -1, 1, pixel_density=512*2)
     julia_set = np.vectorize(lambda z: is_in_Julia(z, c, num_iterations=100))(z)
     image_array = np.logical_not(julia_set) * 255
     image = Image.fromarray(image_array.astype(np.uint8))
