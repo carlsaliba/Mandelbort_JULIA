@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mandelbrot_julia.Mandelbrot &#8212; Documentation MandelJulia </title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=d1a510d7"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de mandelbrot_julia.Mandelbrot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cmath</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+
+
+<div class="viewcode-block" id="is_in_Mandelbrot">
+<a class="viewcode-back" href="../../mandelbrot_julia.html#mandelbrot_julia.Mandelbrot.is_in_Mandelbrot">[docs]</a>
+<span class="k">def</span> <span class="nf">is_in_Mandelbrot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Détermine si un nombre complexe `c` appartient à l&#39;ensemble de Mandelbrot </span>
+<span class="sd">    en vérifiant s&#39;il reste borné après un certain nombre d&#39;itérations.</span>
+
+<span class="sd">    Paramètres:</span>
+<span class="sd">    - c (complex): Nombre complexe à tester.</span>
+<span class="sd">    - num_iterations (int): Nombre d&#39;itérations (terme de la suite) .</span>
+
+<span class="sd">    Retourne:</span>
+<span class="sd">    - bool: True si `c` est dans l&#39;ensemble, sinon False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="is_in_Julia">
+<a class="viewcode-back" href="../../mandelbrot_julia.html#mandelbrot_julia.Mandelbrot.is_in_Julia">[docs]</a>
+<span class="k">def</span> <span class="nf">is_in_Julia</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">num_iterations</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Détermine si un point complexe `z` appartient à l&#39;ensemble de Julia pour un </span>
+<span class="sd">    nombre complexe donné `c`, en vérifiant s&#39;il reste borné après un certain nombre </span>
+<span class="sd">    d&#39;itérations.</span>
+
+<span class="sd">    Paramètres:</span>
+<span class="sd">    - z (complex): Point complexe initial.</span>
+<span class="sd">    - c (complex): Constante complexe définissant l&#39;ensemble de Julia.</span>
+<span class="sd">    - num_iterations (int): Nombre d&#39;itérations (terme de la suite).</span>
+
+<span class="sd">    Retourne:</span>
+<span class="sd">    - bool: True si `z` est dans l&#39;ensemble, sinon False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span></div>
+
+
+
+
+<div class="viewcode-block" id="complex_matrix">
+<a class="viewcode-back" href="../../mandelbrot_julia.html#mandelbrot_julia.Mandelbrot.complex_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">complex_matrix</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">pixel_density</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Génère une matrice de nombres complexes correspondant aux coordonnées</span>
+<span class="sd">    dans la zone définie par (xmin, xmax, ymin, ymax) et à la densité de pixels </span>
+<span class="sd">    spécifiée.</span>
+
+<span class="sd">    Paramètres:</span>
+<span class="sd">    - xmin (float): Limite minimale sur l&#39;axe réel.</span>
+<span class="sd">    - xmax (float): Limite maximale sur l&#39;axe réel.</span>
+<span class="sd">    - ymin (float): Limite minimale sur l&#39;axe imaginaire.</span>
+<span class="sd">    - ymax (float): Limite maximale sur l&#39;axe imaginaire.</span>
+<span class="sd">    - pixel_density (int): Densité de pixels pour l&#39;échantillonnage.</span>
+
+<span class="sd">    Retourne:</span>
+<span class="sd">    - np.ndarray: Matrice de nombres complexes correspondant aux coordonnées.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">re</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">)</span> <span class="o">*</span> <span class="n">pixel_density</span><span class="p">))</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">)</span> <span class="o">*</span> <span class="n">pixel_density</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">re</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">im</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span></div>
+
+
+<div class="viewcode-block" id="plot_mandelbrot">
+<a class="viewcode-back" href="../../mandelbrot_julia.html#mandelbrot_julia.Mandelbrot.plot_mandelbrot">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_mandelbrot</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Génère et affiche une image de l&#39;ensemble de Mandelbrot dans une fenêtre graphique.</span>
+
+<span class="sd">    Paramètres:</span>
+<span class="sd">    - Aucun.</span>
+
+<span class="sd">    Retourne:</span>
+<span class="sd">    - None: Affiche directement l&#39;image de l&#39;ensemble de Mandelbrot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">complex_matrix</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">pixel_density</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+    <span class="n">mandelbrot_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">is_in_Mandelbrot</span><span class="p">)(</span><span class="n">c</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">image_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">mandelbrot_set</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+
+
+
+<div class="viewcode-block" id="plot_Julia">
+<a class="viewcode-back" href="../../mandelbrot_julia.html#mandelbrot_julia.Mandelbrot.plot_Julia">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_Julia</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Génère et affiche une image de l&#39;ensemble de Julia dans une fenêtre graphique.</span>
+
+<span class="sd">    Paramètres:</span>
+<span class="sd">    - c (complex): Constante complexe définissant l&#39;ensemble de Julia.</span>
+
+<span class="sd">    Retourne:</span>
+<span class="sd">    - None: Affiche directement l&#39;image de l&#39;ensemble de Julia.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">complex_matrix</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pixel_density</span><span class="o">=</span><span class="mi">512</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">julia_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">is_in_Julia</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">))(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">image_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">julia_set</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+
+
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">MandelJulia</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">Mandelbrot and Julia Set Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">mandelbrot_julia</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, SALHI / SALIBA.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
