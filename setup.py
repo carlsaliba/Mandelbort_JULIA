@@ -10,7 +10,9 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "fractal-plot=mandelbrot_julia:main",
+            "MandelbrotPlot=mandelbrot_julia:main_mandel",
+            "JuliaPlot=mandelbrot_julia:main_julia"
+
         ],
     },
     description="A package to plot Mandelbrot and Julia sets.",

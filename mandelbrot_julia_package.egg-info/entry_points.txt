@@ -1,0 +1,3 @@
+[console_scripts]
+JuliaPlot = mandelbrot_julia:main_julia
+MandelbrotPlot = mandelbrot_julia:main_mandel

@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: mandelbrot_julia_package
+Version: 0.1
+Summary: A package to plot Mandelbrot and Julia sets.
+Requires-Dist: numpy
+Requires-Dist: Pillow

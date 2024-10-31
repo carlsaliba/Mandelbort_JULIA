@@ -1,0 +1,12 @@
+README.md
+setup.py
+mandelbrot_julia/Mandelbrot.py
+mandelbrot_julia/__init__.py
+mandelbrot_julia/__main__.py
+mandelbrot_julia_package.egg-info/PKG-INFO
+mandelbrot_julia_package.egg-info/SOURCES.txt
+mandelbrot_julia_package.egg-info/dependency_links.txt
+mandelbrot_julia_package.egg-info/entry_points.txt
+mandelbrot_julia_package.egg-info/requires.txt
+mandelbrot_julia_package.egg-info/top_level.txt
+tests/test_fonctions.py
