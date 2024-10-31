@@ -36,7 +36,7 @@ Installation
 
    .. code-block:: bash
 
-       git clone <repository_url>
+       git clone https://github.com/carlsaliba/Mandelbort_JULIA.git
        cd <repository_folder>
 
 2. **Install the package**:
@@ -58,7 +58,7 @@ Once installed, you can use the following commands to generate Mandelbrot and Ju
 
       MandelbrotPlot
 
-  .. image:: figure.png
+  .. image:: figures/figure.png
    :alt: Example Mandelbrot Plot
    :width: 600px
 
@@ -67,7 +67,7 @@ Once installed, you can use the following commands to generate Mandelbrot and Ju
   .. code-block:: bash
 
       JuliaPlot
-  .. image:: figure_julia.png
+  .. image:: figures/figure_julia.png
    :alt: Example Mandelbrot Plot
    :width: 600px
 Examples
